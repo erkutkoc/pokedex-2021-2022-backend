@@ -14,7 +14,7 @@ router.get("/", function(req, res){
  * name : GET /pokemons/name/{name}
  */
 router.get("/name/:name", function(req, res){
-    const name = req.params.name.toLowerCase().replace(/\s/g, '');
+    const name = req.params.name;
     console.log("GET /pokemons/name/"+name);
     const pokemon = PokemonModel.getByName(name);
     if(!pokemon) return res.status(404).end();
@@ -42,10 +42,11 @@ router.get("/id/:id", function(req, res){
 /**
  * all sort : GET /pokemons/sort/{sortValue}
  */
- router.get("/sort/:sortValue", function(req, res){
-    const sortValue = req.params.sortValue;
-    console.log("GET /pokemons/sort/"+sortValue);
-    return res.json(PokemonModel.getAllSorted(sortValue));
+ router.get("/sort/:filter/:value", function(req, res){
+    const filter = req.params.filter;
+    const value = req.params.value;
+    console.log("GET /pokemons/"+filter+"/"+value);
+    return res.json(PokemonModel.getAllSorted(filter, value));
 });
 
 module.exports = router;
