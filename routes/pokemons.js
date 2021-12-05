@@ -1,5 +1,6 @@
 var express = require("express");
 const {Pokemon} = require("../model/pokemons");
+const {Users} = require("../model/users");
 const router = require("./auths");
 const PokemonModel = new Pokemon();
 //const {authorizeFromCookie} = require("../utils/authorize");
@@ -47,6 +48,15 @@ router.get("/id/:id", function(req, res){
     const value = req.params.value;
     console.log("GET /pokemons/"+filter+"/"+value);
     return res.json(PokemonModel.getAllSorted(filter, value));
+});
+
+/**
+ * add pokemon in user collection
+ */
+router.post("/user/:userId/:pokemonId", function(req, res){
+    const userId = req.params.userId;
+    const pokemonId = req.params.pokemonId;
+    return res.json(Users.addPokemonInUserCollection(userId, pokemonId));
 });
 
 module.exports = router;

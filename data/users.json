@@ -1,12 +1,25 @@
 [{
     "email": "admin",
-    "password": "$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa"
+    "password": "$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa",
+    "collections":{
+
+    }
 }, {
-    "password": "$2b$10$ofY1pJlNKZ1UY9Jo8cLFw.sy.TSxHhbEuXxLf1.Wr2FbA1xFQcnA2"
+    "email": "test1@test.be",
+    "password": "$2b$10$ofY1pJlNKZ1UY9Jo8cLFw.sy.TSxHhbEuXxLf1.Wr2FbA1xFQcnA2"    ,
+    "collections":{
+        
+    }
 }, {
     "email": "test@test.be",
-    "password": "$2b$10$wK/edtYxziqEEw70fVVQy.Levekxne0OBTTZSjf5uA19a9dUBdvBu"
+    "password": "$2b$10$wK/edtYxziqEEw70fVVQy.Levekxne0OBTTZSjf5uA19a9dUBdvBu",
+    "collections":{
+        
+    }
 }, {
     "email": "maxime99va@test.be",
-    "password": "$2b$10$DCD7bWk81vW4hDFFW4WHme.I1hEdXlnW/W7CDGVq2W75XdVoP2wP6"
+    "password": "$2b$10$DCD7bWk81vW4hDFFW4WHme.I1hEdXlnW/W7CDGVq2W75XdVoP2wP6",
+    "collections":{
+        
+    }
 }]

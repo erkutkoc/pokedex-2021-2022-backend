@@ -95,6 +95,15 @@ class Users {
     serialize(this.jsonDbPath, items);
     return newitem;
   }
+  async addPokemonInUserCollection(userId, pokemonId){
+    const items = parse(this.jsonDbPath, this.defaultItems);
+    const foundIndex = items.findIndex((item) => item.id == id);
+    if (foundIndex < 0) return;
+    const item = items[foundIndex];
+    item.collections.push(pokemonId);
+    items[foundIndex] = item;
+    serialize(this.jsonDbPath, items);
+  }
 
   /**
    * Delete a item in the DB and return the deleted item
