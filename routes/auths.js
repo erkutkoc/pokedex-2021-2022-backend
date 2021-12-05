@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const { Users } = require("../model/users");
 const userModel = new Users();
-const test ;
+//const test ;
 /* Register a user : POST /auths/register */
 router.post("/register", async function (req, res, next) {
   // Send an error code '400 Bad request' if the body parameters are not valid
