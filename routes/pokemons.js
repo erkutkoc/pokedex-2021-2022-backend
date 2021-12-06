@@ -44,10 +44,10 @@ router.get("/id/:id", function(req, res){
  * all sort : GET /pokemons/sort/{sortValue}
  */
  router.get("/sort/:filter/:value", function(req, res){
-    const filter = req.params.filter;
-    const value = req.params.value;
-    console.log("GET /pokemons/"+filter+"/"+value);
-    return res.json(PokemonModel.getAllSorted(filter, value));
+
+    var filter = req.params.filter;
+    var value = req.params.value;
+    return res.json(PokemonModel.getAllSorted(filter,value));
 });
 
 /**

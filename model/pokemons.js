@@ -9,10 +9,48 @@ class Pokemon {
         const pokemons = parse(jsonDbPath);
         return pokemons;
     }
-    getAllSorted(filter = undefined, value = undefined){
-        const pokemons = parse(jsonDbPath);
-        if(filter == "HP")
-        console.log(pokemons.sort((a, b)=> a.base.HP < b.base.HP))
+    getAllSorted(filter, value){
+        var filterr = filter; 
+        var valuee = value;
+        let pokemons = parse(jsonDbPath);
+        pokemons = pokemons.filter(a => a.base != undefined);
+        if(filterr == 'HP'){
+            if(valuee == 'ASC'){
+               return pokemons.sort(function(a, b) {
+                return a.base.HP - b.base.HP;
+              });
+            }
+            else {
+                return  pokemons.sort(function(a, b) {
+                    return b.base.HP - a.base.HP;
+                  });
+                }
+        }/*
+        if(filter == "Defense"){
+            if(value == "ASC"){
+                pokemons.sort((a, b)=> a.base.Defense < b.base.Defense);
+            }
+            else {
+                pokemons.sort((a, b)=> a.base.Defense > b.base.Defense);
+            }
+        }
+        if(filter === "Attack"){
+            if(value === "ASC"){
+                console.log(pokemons.sort((a, b)=> a.base.Attack < b.base.Attack))
+            }
+            else {
+                console.log(pokemons.sort((a, b)=> a.base.Attack > b.base.Attack))
+            }
+        }
+        if(filter === "Speed"){
+            if(value === "ASC"){
+                console.log(pokemons.sort((a, b)=> a.base.Speed < b.base.Speed))
+            }
+            else {
+                console.log(pokemons.sort((a, b)=> a.base.Speed > b.base.Speed))
+            }
+        }
+        */
     }
     getByName(name){
         const pokemons = parse(jsonDbPath);
