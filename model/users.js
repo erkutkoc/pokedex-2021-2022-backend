@@ -16,6 +16,7 @@ const defaultItems = [
     email: "admin@test.be",
     pseudo: "admin",
     password: "$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa",
+    coins: 0,
   },
 ];
 // hash default password
@@ -93,6 +94,7 @@ class Users {
       email: body.email,
       pseudo: body.pseudo,
       password: hashedPassword,
+      coins: 0,
     };
     items.push(newitem);
     serialize(this.jsonDbPath, items);
@@ -161,6 +163,8 @@ class Users {
 
     const authenticatedUser = {
       email: email,
+      pseudo: userFound.pseudo,
+      coins: userFound.coins,
       token: "Future signed token",
     };
 
