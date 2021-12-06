@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const { parse, serialize } = require("../utils/json");
 //var escape = require("escape-html");
-const jwtSecret = "ilovemypizza!";
+const jwtSecret = "ilovepokemon!";
 const LIFETIME_JWT = 24 * 60 * 60 * 1000; // in ms : 24 * 60 * 60 * 1000 = 24h
 
 const jsonDbPath = __dirname + "/../data/users.json";
@@ -13,8 +13,9 @@ const saltRounds = 10;
 // Default data
 const defaultItems = [
   {
-    email: "admin",
-    password: "$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa",//"admin",
+    email: "admin@test.be",
+    pseudo: "admin",
+    password: "$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa",
   },
 ];
 // hash default password
@@ -22,7 +23,8 @@ const defaultItems = [
 bcrypt.hash(defaultItems[0].password, saltRounds).then((hashedPassword) => {
   defaultItems[0].password = hashedPassword;
   console.log("Hash of default password:", hashedPassword);
-});*/
+});
+*/
 
 class Users {
   constructor(dbPath = jsonDbPath, items = defaultItems) {
@@ -89,6 +91,7 @@ class Users {
 
     const newitem = {
       email: body.email,
+      pseudo: body.pseudo,
       password: hashedPassword,
     };
     items.push(newitem);
@@ -175,16 +178,17 @@ class Users {
   /**
    * Create a new user in DB and generate a token
    * @param {*} email
+   * @param {*} pseudo
    * @param {*} password
    * @returns the new authenticated user ({username:..., token:....}) or undefined if the user could not
    * be created (if username already in use)
    */
 
-  async register(email, password) {
+  async register(email, pseudo, password) {
     const userFound = this.getOneByEmail(email);
     if (userFound) return;
 
-    const newUser = await this.addOne({ email: email, password: password });
+    const newUser = await this.addOne({ email: email, pseudo: pseudo, password: password });
 
     const authenticatedUser = {
       email: email,

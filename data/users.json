@@ -1,8 +1,1 @@
-[{
-    "email": "admin@test.be",
-    "pseudo": "admin",
-    "password": "$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa",
-    "collections":{
-
-    }
-}]
+[{"email":"admin@test.be","pseudo":"admin","password":"$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa","collections":{}},{"email":"test@vinci.be","pseudo":{},"password":"$2b$10$JRW4Y60fwBgVkVcDiZkPIuujxPj2BcpqQJ0/y5g3OKtUh4lX2N4h2"}]
