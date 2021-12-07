@@ -7,6 +7,7 @@ const jwtSecret = "ilovepokemon!";
 const LIFETIME_JWT = 24 * 60 * 60 * 1000; // in ms : 24 * 60 * 60 * 1000 = 24h
 
 const jsonDbPath = __dirname + "/../data/users.json";
+const jsonPokemonDbPath = __dirname + "/../data/pokemons.json";
 
 const saltRounds = 10;
 
@@ -18,6 +19,7 @@ const defaultItems = [
     pseudo: "admin",
     password: "$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa",
     coins: 0,
+    "collections": [4, 2, 3]
   },
 ];
 // hash default password
@@ -29,67 +31,85 @@ bcrypt.hash(defaultItems[0].password, saltRounds).then((hashedPassword) => {
 */
 
 class Users {
-  constructor(dbPath = jsonDbPath, items = defaultItems) {
+  constructor(dbPath = jsonDbPath, users = defaultItems) {
     this.jsonDbPath = dbPath;
-    this.defaultItems = items;
+    this.defaultItems = users;
   }
 
   getNextId() {
-    const items = parse(this.jsonDbPath, this.defaultItems);
+    const users = parse(this.jsonDbPath, this.defaultItems);
     let nextId;
-    if (items.length === 0) nextId = 1;
-    else nextId = items[items.length - 1].id + 1;
+    if (users.length === 0) nextId = 1;
+    else nextId = users[users.length - 1].id + 1;
 
     return nextId;
   }
 
   /**
-   * Returns all items
-   * @returns {Array} Array of items
+   * Returns all users
+   * @returns {Array} Array of users
    */
   getAll() {
-    const items = parse(this.jsonDbPath, this.defaultItems);
-    return items;
+    const users = parse(this.jsonDbPath, this.defaultItems);
+    return users;
   }
 
   /**
-   * Returns the item identified by id
-   * @param {number} id - id of the item to find
-   * @returns {object} the item found or undefined if the id does not lead to a item
+   * Returns the user identified by id
+   * @param {number} id - id of the user to find
+   * @returns {object} the user found or undefined if the id does not lead to a user
    */
   getOne(id) {
-    const items = parse(this.jsonDbPath, this.defaultItems);
-    const foundIndex = items.findIndex((item) => item.id == id);
-    if (foundIndex < 0) return;
+    const users = parse(this.jsonDbPath, this.defaultItems);
+    const foundIndexUser = users.findIndex((user) => user.id == id);
+    if (foundIndexUser < 0) return;
 
-    return items[foundIndex];
+    return users[foundIndexUser];
   }
 
   /**
-   * Returns the item identified by email
-   * @param {string} email - email of the item to find
-   * @returns {object} the item found or undefined if the email does not lead to a item
+   * Returns the user identified by email
+   * @param {string} email - email of the user to find
+   * @returns {object} the user found or undefined if the email does not lead to a user
    */
   getOneByEmail(email) {
-    const items = parse(this.jsonDbPath, this.defaultItems);
-    const foundIndex = items.findIndex((item) => item.email == email);
-    if (foundIndex < 0) return;
+    const users = parse(this.jsonDbPath, this.defaultItems);
+    const foundIndexUser = users.findIndex((user) => user.email == email);
+    if (foundIndexUser < 0) return;
 
-    return items[foundIndex];
+    return users[foundIndexUser];
+  }
+  getAllPokemonByUserCollection(userId){
+    const users = parse(this.jsonDbPath);
+    const foundIndexUser = users.findIndex((user) => user.id == userId);
+    if (foundIndexUser < 0) return;
+
+    const pokemons = parse(jsonPokemonDbPath);
+    var collection = [];
+
+    users[foundIndexUser].collections.forEach(pokemonId => {
+        const foundIndexPokemon = pokemons.findIndex((pokemon) => pokemon.id == pokemonId)
+        if (foundIndexPokemon < 0) return;
+
+        collection[collection.length] = pokemons[foundIndexPokemon];
+
+        
+    });
+    return collection;
   }
 
   /**
-   * Add a item in the DB and returns - as Promise - the added item (containing a new id)
-   * @param {object} body - it contains all required data to create a item
-   * @returns {Promise} Promise reprensents the item that was created (with id)
+   * Add a user in the DB and returns - as Promise - the added user (containing a new id)
+   * @param {object} body - it contains all required data to create a user
+   * @returns {Promise} Promise reprensents the user that was created (with id)
    */
 
   async addOne(body) {
-    const items = parse(this.jsonDbPath, this.defaultItems);
+    const users = parse(this.jsonDbPath, this.defaultItems);
 
     // hash the password (async call)
     const hashedPassword = await bcrypt.hash(body.password, saltRounds);
-    // add new item to the menu
+    // add new user to the menu
 
     const newitem = {
       id: this.getNextId(),
@@ -98,56 +118,62 @@ class Users {
       password: hashedPassword,
       coins: 0,
     };
-    items.push(newitem);
-    serialize(this.jsonDbPath, items);
+    users.push(newitem);
+    serialize(this.jsonDbPath, users);
     return newitem;
   }
-  async addPokemonInUserCollection(userId, pokemonId){
-    const items = parse(this.jsonDbPath, this.defaultItems);
-    const foundIndex = items.findIndex((item) => item.id == id);
-    if (foundIndex < 0) return;
-    const item = items[foundIndex];
-    item.collections.push(pokemonId);
-    items[foundIndex] = item;
-    serialize(this.jsonDbPath, items);
-  }
+
 
   /**
-   * Delete a item in the DB and return the deleted item
-   * @param {number} id - id of the item to be deleted
-   * @returns {object} the item that was deleted or undefined if the delete operation failed
+   * Delete a user in the DB and return the deleted user
+   * @param {number} id - id of the user to be deleted
+   * @returns {object} the user that was deleted or undefined if the delete operation failed
    */
   deleteOne(id) {
-    const items = parse(this.jsonDbPath, this.defaultItems);
-    const foundIndex = items.findIndex((item) => item.id == id);
-    if (foundIndex < 0) return;
-    const itemRemoved = items.splice(foundIndex, 1);
-    serialize(this.jsonDbPath, items);
+    const users = parse(this.jsonDbPath, this.defaultItems);
+    const foundIndexUser = users.findIndex((user) => user.id == id);
+    if (foundIndexUser < 0) return;
+    const itemRemoved = users.splice(foundIndexUser, 1);
+    serialize(this.jsonDbPath, users);
 
     return itemRemoved[0];
   }
 
   /**
-   * Update a item in the DB and return the updated item
-   * @param {number} id - id of the item to be updated
+   * Update a user in the DB and return the updated user
+   * @param {number} id - id of the user to be updated
    * @param {object} body - it contains all the data to be updated
-   * @returns {object} the updated item or undefined if the update operation failed
+   * @returns {object} the updated user or undefined if the update operation failed
    */
   updateOne(id, body) {
-    const items = parse(this.jsonDbPath, this.defaultItems);
-    const foundIndex = items.findIndex((item) => item.id == id);
-    if (foundIndex < 0) return;
-    // create a new object based on the existing item - prior to modification -
+    const users = parse(this.jsonDbPath, this.defaultItems);
+    const foundIndexUser = users.findIndex((user) => user.id == id);
+    if (foundIndexUser < 0) return;
+    // create a new object based on the existing user - prior to modification -
     // and the properties requested to be updated (those in the body of the request)
     // use of the spread operator to create a shallow copy and repl
-    const updateditem = { ...items[foundIndex], ...body };
-    // replace the item found at index : (or use splice)
-    items[foundIndex] = updateditem;
+    const updateditem = { ...users[foundIndexUser], ...body };
+    // replace the user found at index : (or use splice)
+    users[foundIndexUser] = updateditem;
 
-    serialize(this.jsonDbPath, items);
+    serialize(this.jsonDbPath, users);
     return updateditem;
   }
+  addPokemonInUserCollection(userId, pokemonId){
+    var users = parse(jsonDbPath);
+    var pokemons = parse(jsonPokemonDbPath);
+    const foundIndexUser = users.findIndex((user) => user.id == userId);
+    if (foundIndexUser < 0) return;
 
+    const foundIndexPokemon = pokemons.findIndex((pokemon) => pokemon.id == pokemonId)
+    if (foundIndexPokemon < 0) return;
+    var collection = users[foundIndexUser].collections;
+    collection[collection.length] = parseInt(pokemonId);
+    users[foundIndexUser].collections = collection;
+    console.log(users[foundIndexUser])
+    serialize(jsonDbPath, users);
+    return users[foundIndexUser];
+  }
 
   /**
    * Authenticate a user and generate a token if the user credentials are OK
