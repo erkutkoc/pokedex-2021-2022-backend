@@ -1,3 +1,4 @@
+"use strict";
 var express = require("express");
 const {Pokemon} = require("../model/pokemons");
 const {Users} = require("../model/users");

@@ -10,9 +10,10 @@ const jsonDbPath = __dirname + "/../data/users.json";
 
 const saltRounds = 10;
 
-// Default data
+// Default data -- mdp = 'admin'
 const defaultItems = [
   {
+    id: 1,
     email: "admin@test.be",
     pseudo: "admin",
     password: "$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa",
@@ -91,6 +92,7 @@ class Users {
     // add new item to the menu
 
     const newitem = {
+      id: this.getNextId(),
       email: body.email,
       pseudo: body.pseudo,
       password: hashedPassword,
@@ -146,6 +148,7 @@ class Users {
     return updateditem;
   }
 
+
   /**
    * Authenticate a user and generate a token if the user credentials are OK
    * @param {*} email
@@ -162,6 +165,7 @@ class Users {
     if (!match) return;
 
     const authenticatedUser = {
+      id: userFound.id,
       email: email,
       pseudo: userFound.pseudo,
       coins: userFound.coins,
@@ -195,7 +199,10 @@ class Users {
     const newUser = await this.addOne({ email: email, pseudo: pseudo, password: password });
 
     const authenticatedUser = {
+      id: newUser.id,
       email: email,
+      pseudo: newUser.pseudo,
+      coins: newUser.coins,
       token: "Future signed token",
     };
 
