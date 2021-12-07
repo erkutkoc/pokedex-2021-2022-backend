@@ -25,32 +25,42 @@ class Pokemon {
                     return b.base.HP - a.base.HP;
                   });
                 }
-        }/*
-        if(filter == "Defense"){
-            if(value == "ASC"){
-                pokemons.sort((a, b)=> a.base.Defense < b.base.Defense);
+        }if(filterr == 'Attack'){
+            if(valuee == 'ASC'){
+               return pokemons.sort(function(a, b) {
+                return a.base.Attack - b.base.Attack;
+              });
             }
             else {
-                pokemons.sort((a, b)=> a.base.Defense > b.base.Defense);
-            }
-        }
-        if(filter === "Attack"){
-            if(value === "ASC"){
-                console.log(pokemons.sort((a, b)=> a.base.Attack < b.base.Attack))
-            }
-            else {
-                console.log(pokemons.sort((a, b)=> a.base.Attack > b.base.Attack))
-            }
-        }
-        if(filter === "Speed"){
-            if(value === "ASC"){
-                console.log(pokemons.sort((a, b)=> a.base.Speed < b.base.Speed))
+                return  pokemons.sort(function(a, b) {
+                    return b.base.Attack - a.base.Attack;
+                  });
+                }
+        }if(filterr == 'Defence'){
+            if(valuee == 'ASC'){
+               return pokemons.sort(function(a, b) {
+                return a.base.Defence - b.base.Defence;
+              });
             }
             else {
-                console.log(pokemons.sort((a, b)=> a.base.Speed > b.base.Speed))
-            }
+                return  pokemons.sort(function(a, b) {
+                    return b.base.Defence - a.base.Defence;
+                  });
+                }
         }
-        */
+        if(filterr == 'Speed'){
+            if(valuee == 'ASC'){
+               return pokemons.sort(function(a, b) {
+                return a.base.Speed - b.base.Speed;
+              });
+            }
+            else {
+                return  pokemons.sort(function(a, b) {
+                    return b.base.Speed - a.base.Speed;
+                  });
+                }
+        }
+        
     }
     getByName(name){
         const pokemons = parse(jsonDbPath);
