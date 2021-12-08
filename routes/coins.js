@@ -1,12 +1,12 @@
 "use strict";
 let express = require("express");
-//const { authorize } = require("../utils/authorize");
+const { authorize } = require("../utils/authorize");
 let router = express.Router();
 const { Users } = require("../model/users");
 const userModel = new Users();
 
 // Update a user's coins : PUT /api/coins/:id
-router.put("/:id", function (req, res) {
+router.put("/:id",authorize, function (req, res) {
 
     const userUpdated = userModel.updateUserCoins(req.params.id, req.body.coins);
     if (!userUpdated) return res.status(404).end();
