@@ -159,6 +159,22 @@ class Users {
     serialize(this.jsonDbPath, users);
     return updateditem;
   }
+
+  /**
+   * Update a user in the DB and return the updated user
+   * @param {number} id - id of the user to be updated
+   * @param {number} coins - it contains all the data to be updated
+   * @returns {object} the updated user or undefined if the update operation failed
+   */
+   updateUserCoins(id, coins) {
+    const users = parse(this.jsonDbPath, this.defaultItems);
+    const foundIndexUser = users.findIndex((user) => user.id == id);
+    if (foundIndexUser < 0) return;
+    users[foundIndexUser].coins = users[foundIndexUser].coins + coins;
+    serialize(jsonDbPath, users);
+    return users[foundIndexUser];
+  }
+
   addPokemonInUserCollection(userId, pokemonId){
     var users = parse(jsonDbPath);
     var pokemons = parse(jsonPokemonDbPath);
