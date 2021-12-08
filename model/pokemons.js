@@ -76,8 +76,11 @@ class Pokemon {
     }
     getOneRandom(){
         //A vérifier
-        let randomID = Math.floor(Math.random() * (data.length));
-        const pokemon = null;
+        
+        let pokemons = parse(jsonDbPath);
+        pokemons = pokemons.filter(a => a.base != undefined);
+        let randomID = Math.floor(Math.random() * (pokemons.length));
+        const pokemon = this.getById(randomID);
         return pokemon;
     }
 

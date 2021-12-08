@@ -35,9 +35,14 @@ router.get("/id/:id", function(req, res){
 /**
  * random : GET /pokemons/random
  */
- router.get("/random", function(req, res){
+ router.get("/random/:number", function(req, res){
     console.log("GET /pokemons/random");
-    const pokemon = PokemonModel.getOneRandom();
+    var number = req.params.number;
+    let pokemon = new Array(number);
+    for (let index = 0; index < number; index++) {
+         pokemon[index] = PokemonModel.getOneRandom();
+        
+    }
     if(!pokemon) return res.status(404).end();
     return res.json(pokemon);
 });
