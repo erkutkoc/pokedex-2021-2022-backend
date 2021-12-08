@@ -2,7 +2,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const { parse, serialize } = require("../utils/json");
-//var escape = require("escape-html");
+var escape = require("escape-html");
 const jwtSecret = "ilovepokemon!";
 const LIFETIME_JWT = 24 * 60 * 60 * 1000; // in ms : 24 * 60 * 60 * 1000 = 24h
 
@@ -170,7 +170,10 @@ class Users {
     const users = parse(this.jsonDbPath, this.defaultItems);
     const foundIndexUser = users.findIndex((user) => user.id == id);
     if (foundIndexUser < 0) return;
-    users[foundIndexUser].coins = users[foundIndexUser].coins + coins;
+    //fait ça pour éviter toutes tentatives d'injections, + doit le remettre en int car escape le transforme en String
+    var coinsToAdd = escape(coins);
+    var intCoinsToAdd = parseInt(coinsToAdd);
+    users[foundIndexUser].coins = users[foundIndexUser].coins + intCoinsToAdd;
     serialize(jsonDbPath, users);
     return users[foundIndexUser];
   }
@@ -200,15 +203,15 @@ class Users {
    */
 
   async login(email, password) {
-    const userFound = this.getOneByEmail(email);
+    const userFound = this.getOneByEmail(escape(email));
     if (!userFound) return;
     // checked hash of passwords
-    const match = await bcrypt.compare(password, userFound.password);
+    const match = await bcrypt.compare(escape(password), userFound.password);
     if (!match) return;
 
     const authenticatedUser = {
       id: userFound.id,
-      email: email,
+      email: userFound.email,
       pseudo: userFound.pseudo,
       coins: userFound.coins,
       token: "Future signed token",
@@ -235,14 +238,14 @@ class Users {
    */
 
   async register(email, pseudo, password) {
-    const userFound = this.getOneByEmail(email);
+    const userFound = this.getOneByEmail(escape(email));
     if (userFound) return;
 
-    const newUser = await this.addOne({ email: email, pseudo: pseudo, password: password });
+    const newUser = await this.addOne({ email: escape(email), pseudo: escape(pseudo), password: escape(password)});
 
     const authenticatedUser = {
       id: newUser.id,
-      email: email,
+      email: newUser.email,
       pseudo: newUser.pseudo,
       coins: newUser.coins,
       token: "Future signed token",
