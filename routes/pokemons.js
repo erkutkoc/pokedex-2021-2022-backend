@@ -1,8 +1,12 @@
 "use strict";
+
 var express = require("express");
 const {Pokemon} = require("../model/pokemons");
 const {Users} = require("../model/users");
 const router = require("./auths");
+const { authorize } = require("../utils/authorize");
+
+const UserModel = new Users();
 const PokemonModel = new Pokemon();
 //const {authorizeFromCookie} = require("../utils/authorize");
 /**
@@ -33,16 +37,17 @@ router.get("/id/:id", function(req, res){
     return res.json(pokemon);
 });
 /**
- * random : GET /pokemons/random
+ * random : GET /pokemons/random + ADD to user collection
  */
- router.get("/random/:number", function(req, res){
+ router.put("/random/:number/:id",authorize, function(req, res){
     console.log("GET /pokemons/random");
+    var userId = req.params.id;
     var number = req.params.number;
     let pokemon = new Array(number);
     for (let index = 0; index < number; index++) {
          pokemon[index] = PokemonModel.getOneRandom();
-        
-    }
+         UserModel.addPokemonInUserCollection(userId,pokemon[index].id);
+    }  
     if(!pokemon) return res.status(404).end();
     return res.json(pokemon);
 });
