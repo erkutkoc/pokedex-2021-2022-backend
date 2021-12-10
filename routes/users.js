@@ -3,7 +3,6 @@ var express = require("express");
 var router = express.Router();
 const {Pokemon} = require("../model/pokemons");
 const {Users} = require("../model/users");
-const { authorize } = require("../utils/authorize");
 
 const PokemonModel = new Pokemon();
 const UserModel = new Users();
