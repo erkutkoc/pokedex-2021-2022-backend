@@ -6,7 +6,7 @@ const {Users} = require("../model/users");
 
 const PokemonModel = new Pokemon();
 const UserModel = new Users();
-//const {authorizeFromCookie} = require("../utils/authorize");
+const {authorizeFromCookie, authorize} = require("../utils/authorize");
 /**
  * all : GET /all users
  */
@@ -16,12 +16,21 @@ router.get("/collection/:userId", function(req, res){
     return res.json(collection);
 });
 /**
- * name : GET /pokemons/name/{name}
+ * name : POST /pokemons/name/{name}
  */
 router.post("/collection", function(req, res){
     console.log("POST collection {user, pokemon} {"+req.body.user+","+ req.body.pokemon+"}");
     const collection = UserModel.addPokemonInUserCollection(req.body.user, req.body.pokemon);
     return res.json(collection);
+});
+
+/**
+ * GET /{userId}"
+ */
+router.get("/:userId",authorize, function(req, res){
+
+    const user = UserModel.getOne(req.params.userId);
+    return res.json(user);
 });
 
 module.exports = router;
