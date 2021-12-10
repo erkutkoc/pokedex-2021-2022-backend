@@ -3,6 +3,7 @@ var express = require("express");
 var router = express.Router();
 const {Pokemon} = require("../model/pokemons");
 const {Users} = require("../model/users");
+const { authorize } = require("../utils/authorize");
 
 const PokemonModel = new Pokemon();
 const UserModel = new Users();
@@ -18,7 +19,7 @@ router.get("/collection/:userId", function(req, res){
 /**
  * name : POST /pokemons/name/{name}
  */
-router.post("/collection", function(req, res){
+router.post("/collection",authorize, function(req, res){
     console.log("POST collection {user, pokemon} {"+req.body.user+","+ req.body.pokemon+"}");
     const collection = UserModel.addPokemonInUserCollection(req.body.user, req.body.pokemon);
     return res.json(collection);
