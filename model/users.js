@@ -8,6 +8,7 @@ const LIFETIME_JWT = 24 * 60 * 60 * 1000; // in ms : 24 * 60 * 60 * 1000 = 24h
 
 const jsonDbPath = __dirname + "/../data/users.json";
 const jsonPokemonDbPath = __dirname + "/../data/pokemons.json";
+const jsonCoinsHistoryForUserDbPath = __dirname + "/../data/coinsHistoryForUser.json";
 
 const saltRounds = 10;
 
@@ -173,7 +174,20 @@ class Users {
     //fait ça pour éviter toutes tentatives d'injections, + doit le remettre en int car escape le transforme en String
     var coinsToAdd = escape(coins);
     var intCoinsToAdd = parseInt(coinsToAdd);
-    users[foundIndexUser].coins = users[foundIndexUser].coins + intCoinsToAdd;
+
+    users[foundIndexUser].coins = users[foundIndexUser].coins + intCoinsToAdd;;
+
+    var today = new Date(); 
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+
+    let coinsHistoryUser = {date:dateTime, userId:id, coins:intCoinsToAdd};
+
+    const coinsHistoryList = parse(jsonCoinsHistoryForUserDbPath);
+    coinsHistoryList.push(coinsHistoryUser);
+
+    serialize(jsonCoinsHistoryForUserDbPath, coinsHistoryList);
     serialize(jsonDbPath, users);
     return users[foundIndexUser];
   }
