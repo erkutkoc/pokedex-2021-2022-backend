@@ -42,7 +42,7 @@ router.post("/login", async function (req, res, next) {
   );
   // Error code '401 Unauthorized' if the user could not be authenticated
   if (!authenticatedUser) return res.status(401).end();
-
+  
   return res.json(authenticatedUser);
 });
 

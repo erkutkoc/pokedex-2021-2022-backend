@@ -164,6 +164,33 @@ class Users {
   /**
    * Update a user in the DB and return the updated user
    * @param {number} id - id of the user to be updated
+   * @param {object} body - it contains all the data to be updated
+   * @returns {object} the updated user or undefined if the update operation failed
+   */
+  async updateOneUser(id, body) {
+    const users = parse(this.jsonDbPath, this.defaultItems);
+    const foundIndexUser = users.findIndex((user) => user.id == id);
+    if (foundIndexUser < 0) return;
+
+    //const pseudo = escape(req.body.pseudo);
+    //const email = escape(req.body.email);
+    const currentPassword = escape(body.currentPassword);
+    const newPassword = escape(body.newPassword);
+
+     // check if currentPassword == password of the user
+     const match = await bcrypt.compare(currentPassword, users[foundIndexUser].password);
+     if (!match) return; 
+
+      // hash the password (async call)
+      const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+      users[foundIndexUser].password = hashedPassword;
+      serialize(this.jsonDbPath, users);
+      return users[foundIndexUser];
+  }
+
+  /**
+   * Update a user in the DB and return the updated user
+   * @param {number} id - id of the user to be updated
    * @param {number} coins - it contains all the data to be updated
    * @returns {object} the updated user or undefined if the update operation failed
    */
