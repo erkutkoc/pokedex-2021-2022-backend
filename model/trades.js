@@ -26,7 +26,7 @@ class Trades {
     return trades[foundIndex];
   }
   /*
-  Return an exchange proposition proposed by the trader
+  Return an exchange proposition proposed by the trader by trade id
   */
   getTraderProposition(id){
     const trades = parse(jsonDbPath);
@@ -36,7 +36,7 @@ class Trades {
     return objectToReturn;
   }
     /*
-  Return an exchange requests proposed by the trader
+  Return an exchange requests proposed by the trader by trade id
   */
   getTraderRequest(id){
     const trades = parse(jsonDbPath);
@@ -46,7 +46,7 @@ class Trades {
     return objectToReturn;
   }
     /*
-  Return all exchanges proposed by the other people for this trades
+  Return all exchanges offers proposed by the other people for this trades by trade id
   */
   getOthersOffersByTradeId(id){
     const trades = parse(jsonDbPath);
@@ -56,7 +56,7 @@ class Trades {
     return objectToReturn;
   }
       /*
-  Return all exchanges proposed by the other people for this trades
+  Return trade status by trade id
   */
   getTradeStatus(id){
     const trades = parse(jsonDbPath);
