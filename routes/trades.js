@@ -17,6 +17,10 @@ router.get("/", function (req, res) {
     console.log("GET /trades");
     return res.json(tradeModel.getAll());
 });
+router.get("/filteredTradingCollection/:id_trader/:id_acceptor", function(req, res){
+    console.log(req.params.id_acceptor)
+    return res.json(tradeModel.getFilteredCollections(req.params.id_trader, req.params.id_acceptor));
+});
 /**
  * param  = req.params.id
  */

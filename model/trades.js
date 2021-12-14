@@ -20,6 +20,23 @@ class Trades {
     console.log(trades)
     return trades;
   }
+  getFilteredCollections(idTrader, idAcceptor){
+    console.log(idTrader)
+    console.log(idAcceptor)
+    const users = parse(usersDbPath);
+    let traderIndex = users.findIndex((user) => user.id == idTrader);
+    let acceptorIndex = users.findIndex((user) => user.id == idAcceptor);
+    let traderCollections =  users[traderIndex].collections;
+    let acceptorCollections =  users[acceptorIndex].collections;
+    let collections = [];
+    console.log(traderCollections)
+    console.log(acceptorCollections)
+    traderCollections.forEach(element => {
+      acceptorCollections = acceptorCollections.filter(e => element != e);
+    });
+
+    return acceptorCollections;
+  }
   /*
   return one trade by id
   */
