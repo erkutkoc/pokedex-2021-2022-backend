@@ -108,20 +108,26 @@ class Trades {
     const trades = parse(this.tradesDbPath);
     let tradeIndex = trades.findIndex((trade) => trade.id == id);
     if (tradeIndex < 0) return;
-
-    let acceptorCollections = users[foundIndexUser].collections;
-    if (this.containsCard(trades[tradeIndex].propositions, propositions)) {
+    if (idAcceptor != trades[tradeIndex].id_trader) {
+      let acceptorCollections = users[foundIndexUser].collections;
+      if (this.containsCard(trades[tradeIndex].propositions, propositions)) {
+        return null;
+      } else if (!this.containsCard(acceptorCollections, propositions)) { // check if users collections contains propositions card
+        return null;
+      } else {  
+        propositions.forEach(element => {
+         this.deleteCardUserCollection(element, idAcceptor)
+        });
+        let newOffer =  {
+          id_acceptor : idAcceptor, 
+          propositions : propositions
+        };
+        trades[tradeIndex].other_offers.offers[trades[tradeIndex].other_offers.offers.length ] = newOffer;
+        serialize(this.tradesDbPath, trades);
+        return newOffer;
+      }
+    }else{
       return null;
-    } else if (!this.containsCard(acceptorCollections, propositions)) { // check if users collections contains propositions card
-      return null;
-    } else {
-      console.log(acceptorCollections)
-      acceptorCollections.forEach(element => {
-       // this.deleteCardUserCollection(element, idAcceptor)
-      });
-      trades[tradeIndex].other_offers.push(propositions);
-      serialize(this.tradesDbPath, trades);
-      return trades[tradeIndex].other_offers;
     }
   }
   /*########################### Add End ###########################*/
@@ -141,11 +147,8 @@ class Trades {
     const foundIndexUser = users.findIndex((user) => user.id == idTrader);
     let collections = users[foundIndexUser].collections;
     const indexToDelete = collections.findIndex((e) => e == element);
-    console.log(collections)
     collections.splice(indexToDelete, 1);
-    console.log(collections)
     users[foundIndexUser].collections = collections;
-
     serialize(this.usersDbPath, users);
   }
   /*

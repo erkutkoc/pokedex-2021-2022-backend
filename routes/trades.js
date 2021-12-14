@@ -7,6 +7,7 @@ let router = express.Router();
 const {
     Trades
 } = require("../model/trades");
+const { response } = require("express");
 const tradeModel = new Trades();
 
 
@@ -51,6 +52,7 @@ router.get("/:id/others_offers", function (req, res) {
     const id = req.params.id;
     console.log("GET /trades/id/" + id);
     const trade = tradeModel.getOthersOffersByTradeId(id);
+    console.log(trade);
     if (!trade) return res.status(404).end();
     return res.json(trade);
 });
@@ -87,7 +89,8 @@ router.put("/offers", function (req, res) {
     if (!req.body.id || !req.body.id_acceptor || !req.body.propositions) return res.status(400).end();
     console.log(req.body)
     const otherOffers = tradeModel.addOffer(req.body.id, req.body.id_acceptor, req.body.propositions);
-    return otherOffers;
+    if(!otherOffers) response.status(400).end();
+    return res.json(otherOffers);
 });
 router.put("/", function (req, res) {
     if (!req.body) return res.status(400).end();
