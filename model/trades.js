@@ -94,7 +94,7 @@ class Trades {
         other_offers: {
           offers: Array(null)
         },
-        status: "R"
+        status: "En cours"
       };
       trades.push(newTrade);
       serialize(this.tradesDbPath, trades);
@@ -114,21 +114,53 @@ class Trades {
         return null;
       } else if (!this.containsCard(acceptorCollections, propositions)) { // check if users collections contains propositions card
         return null;
-      } else {  
+      } else {
         propositions.forEach(element => {
-         this.deleteCardUserCollection(element, idAcceptor)
+          this.deleteCardUserCollection(element, idAcceptor)
         });
-        let newOffer =  {
-          id_acceptor : idAcceptor, 
-          propositions : propositions
+        let newOffer = {
+          id_acceptor: idAcceptor,
+          propositions: propositions
         };
-        trades[tradeIndex].other_offers.offers[trades[tradeIndex].other_offers.offers.length ] = newOffer;
+        trades[tradeIndex].other_offers.offers[trades[tradeIndex].other_offers.offers.length] = newOffer;
         serialize(this.tradesDbPath, trades);
         return newOffer;
       }
-    }else{
+    } else {
       return null;
     }
+  }
+  acceptTrade(id, idAcceptor) {
+    const trades = parse(this.tradesDbPath);
+    let tradeIndex = trades.findIndex((trade) => trade.id == id);
+    if (tradeIndex < 0) return;
+    const users = parse(this.usersDbPath);
+    trades[tradeIndex].id_acceptor = idAcceptor;
+    trades[tradeIndex].status = "Accepter";
+    let foundIndexUser = -1;
+    trades[tradeIndex].other_offers.offers.forEach(element => {
+      foundIndexUser = users.findIndex((user) => user.id == element.id_acceptor);
+      if (foundIndexUser < 0) return;
+      element.propositions.forEach(element => {
+        console.log(element)
+        users[foundIndexUser].collections[users[foundIndexUser].collections.length] = element;
+      });
+
+    });
+    let foundIndexAcceptor = users.findIndex((user) => user.id == idAcceptor);
+    if (foundIndexAcceptor < 0) return;
+    trades[tradeIndex].propositions.forEach(element => {
+      users[foundIndexAcceptor].collections[users[foundIndexAcceptor].collections.length] = element;
+    });
+    let foundIndexTrader = users.findIndex((user) => user.id == trades[tradeIndex].id_trader);
+    if (foundIndexTrader < 0) return;
+    trades[tradeIndex].requests.forEach(element => {
+      users[foundIndexTrader].collections[users[foundIndexTrader].collections.length] = element;
+    });
+    trades[tradeIndex].status = "Accept";
+    serialize(this.usersDbPath, users);
+    serialize(this.tradesDbPath, trades);
+    return true;
   }
   /*########################### Add End ###########################*/
   /*########################### Utils ###########################*/

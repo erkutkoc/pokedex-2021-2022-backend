@@ -100,5 +100,12 @@ router.put("/", function (req, res) {
     if (!trade) return res.status(400).end();
     return res.json(trade);
 });
+router.put("/accept", function(req, res){
+    if (!req.body) return res.status(400).end();
+    if (!req.body.id || !req.body.id_acceptor) return res.status(400).end(); 
+    const trade = tradeModel.acceptTrade(req.body.id, req.body.id_acceptor);
+    if(!trade) return res.status(400).end();
+    return res.json(trade);
+});
 
 module.exports = router;
