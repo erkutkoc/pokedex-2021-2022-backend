@@ -1,7 +1,10 @@
 "use strict";
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
-const { parse, serialize } = require("../utils/json");
+const {
+  parse,
+  serialize
+} = require("../utils/json");
 var escape = require("escape-html");
 const jwtSecret = "ilovepokemon!";
 const LIFETIME_JWT = 24 * 60 * 60 * 1000; // in ms : 24 * 60 * 60 * 1000 = 24h
@@ -13,16 +16,14 @@ const jsonCoinsHistoryForUserDbPath = __dirname + "/../data/coinsHistoryForUser.
 const saltRounds = 10;
 
 // Default data -- mdp = 'admin'
-const defaultItems = [
-  {
-    id: 1,
-    email: "admin@test.be",
-    pseudo: "admin",
-    password: "$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa",
-    coins: 0,
-    "collections": [4, 2, 3]
-  },
-];
+const defaultItems = [{
+  id: 1,
+  email: "admin@test.be",
+  pseudo: "admin",
+  password: "$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa",
+  coins: 0,
+  "collections": [4, 2, 3]
+}, ];
 // hash default password
 /*
 bcrypt.hash(defaultItems[0].password, saltRounds).then((hashedPassword) => {
@@ -80,7 +81,7 @@ class Users {
 
     return users[foundIndexUser];
   }
-  getAllPokemonByUserCollection(userId){
+  getAllPokemonByUserCollection(userId) {
     const users = parse(this.jsonDbPath);
     const foundIndexUser = users.findIndex((user) => user.id == userId);
     if (foundIndexUser < 0) return;
@@ -89,12 +90,12 @@ class Users {
     var collection = [];
 
     users[foundIndexUser].collections.forEach(pokemonId => {
-        const foundIndexPokemon = pokemons.findIndex((pokemon) => pokemon.id == pokemonId)
-        if (foundIndexPokemon < 0) return;
+      const foundIndexPokemon = pokemons.findIndex((pokemon) => pokemon.id == pokemonId)
+      if (foundIndexPokemon < 0) return;
 
-        collection[collection.length] = pokemons[foundIndexPokemon];
+      collection[collection.length] = pokemons[foundIndexPokemon];
 
-        
+
     });
     return collection;
   }
@@ -153,7 +154,10 @@ class Users {
     // create a new object based on the existing user - prior to modification -
     // and the properties requested to be updated (those in the body of the request)
     // use of the spread operator to create a shallow copy and repl
-    const updateditem = { ...users[foundIndexUser], ...body };
+    const updateditem = {
+      ...users[foundIndexUser],
+      ...body
+    };
     // replace the user found at index : (or use splice)
     users[foundIndexUser] = updateditem;
 
@@ -177,15 +181,15 @@ class Users {
     const currentPassword = escape(body.currentPassword);
     const newPassword = escape(body.newPassword);
 
-     // check if currentPassword == password of the user
-     const match = await bcrypt.compare(currentPassword, users[foundIndexUser].password);
-     if (!match) return; 
+    // check if currentPassword == password of the user
+    const match = await bcrypt.compare(currentPassword, users[foundIndexUser].password);
+    if (!match) return;
 
-      // hash the password (async call)
-      const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
-      users[foundIndexUser].password = hashedPassword;
-      serialize(this.jsonDbPath, users);
-      return users[foundIndexUser];
+    // hash the password (async call)
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+    users[foundIndexUser].password = hashedPassword;
+    serialize(this.jsonDbPath, users);
+    return users[foundIndexUser];
   }
 
   /**
@@ -194,7 +198,7 @@ class Users {
    * @param {number} coins - it contains all the data to be updated
    * @returns {object} the updated user or undefined if the update operation failed
    */
-   updateUserCoins(id, coins) {
+  updateUserCoins(id, coins) {
     const users = parse(this.jsonDbPath, this.defaultItems);
     const foundIndexUser = users.findIndex((user) => user.id == id);
     if (foundIndexUser < 0) return;
@@ -204,12 +208,16 @@ class Users {
 
     users[foundIndexUser].coins = users[foundIndexUser].coins + intCoinsToAdd;;
 
-    var today = new Date(); 
-    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var today = new Date();
+    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    var dateTime = date+' '+time;
+    var dateTime = date + ' ' + time;
 
-    let coinsHistoryUser = {date:dateTime, userId:id, coins:intCoinsToAdd};
+    let coinsHistoryUser = {
+      date: dateTime,
+      userId: id,
+      coins: intCoinsToAdd
+    };
 
     const coinsHistoryList = parse(jsonCoinsHistoryForUserDbPath);
     coinsHistoryList.push(coinsHistoryUser);
@@ -219,7 +227,7 @@ class Users {
     return users[foundIndexUser];
   }
 
-  addPokemonInUserCollection(userId, pokemonId){
+  addPokemonInUserCollection(userId, pokemonId) {
     var users = parse(jsonDbPath);
     var pokemons = parse(jsonPokemonDbPath);
     const foundIndexUser = users.findIndex((user) => user.id == userId);
@@ -259,10 +267,13 @@ class Users {
     };
 
     // replace expected token with JWT : create a JWT
-    const token = jwt.sign(
-      { email: authenticatedUser.email }, // session data in the payload
+    const token = jwt.sign({
+        email: authenticatedUser.email
+      }, // session data in the payload
       jwtSecret, // secret used for the signature
-      { expiresIn: LIFETIME_JWT } // lifetime of the JWT
+      {
+        expiresIn: LIFETIME_JWT
+      } // lifetime of the JWT
     );
 
     authenticatedUser.token = token;
@@ -282,7 +293,11 @@ class Users {
     const userFound = this.getOneByEmail(escape(email));
     if (userFound) return;
 
-    const newUser = await this.addOne({ email: escape(email), pseudo: escape(pseudo), password: escape(password)});
+    const newUser = await this.addOne({
+      email: escape(email),
+      pseudo: escape(pseudo),
+      password: escape(password)
+    });
 
     const authenticatedUser = {
       id: newUser.id,
@@ -293,10 +308,13 @@ class Users {
     };
 
     // replace expected token with JWT : create a JWT
-    const token = jwt.sign(
-      { email: authenticatedUser.email }, // session data in the payload
+    const token = jwt.sign({
+        email: authenticatedUser.email
+      }, // session data in the payload
       jwtSecret, // secret used for the signature
-      { expiresIn: LIFETIME_JWT } // lifetime of the JWT
+      {
+        expiresIn: LIFETIME_JWT
+      } // lifetime of the JWT
     );
 
     authenticatedUser.token = token;
@@ -304,4 +322,6 @@ class Users {
   }
 }
 
-module.exports = { Users };
+module.exports = {
+  Users
+};

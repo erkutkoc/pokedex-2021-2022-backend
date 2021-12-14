@@ -1,1 +1,16 @@
-[{"id":1,"email":"admin@test.be","pseudo":"admin","password":"$2b$10$t2Xe6RMpMZVPtj82ijXQmuiO/bwXrTMeOne2o0wAVxKqA.9d20OX6","coins":136600,"collections":[6,2,3,1,500,129,622,596,117,441,41,471,25,718,688,356,642,768,64,752,146,272,322,448,124,90,685,322,633,593,167,479,804,734,611,505,586,268,727,180,389,336,129,296,760,417,124,801,781,808,23,445,594,214,296]}]
+[{
+    "id": 1,
+    "email": "admin@test.be",
+    "pseudo": "admin",
+    "password": "$2b$10$t2Xe6RMpMZVPtj82ijXQmuiO/bwXrTMeOne2o0wAVxKqA.9d20OX6",
+    "coins": 136600,
+    "collections": [6, 2, 3, 1, 500, 129, 622, 596, 117, 441, 41, 471, 25, 718, 688, 356, 642, 768, 64, 752, 146, 272, 322, 448, 124, 90, 685, 322, 633, 593, 167, 479, 804, 734, 611, 505, 586, 268, 727, 180, 389, 336, 129, 296, 760, 417, 124, 801, 781, 808, 23, 445, 594, 214, 296]
+}]
+[{
+    "id": 2,
+    "email": "test@test.be",
+    "pseudo": "test",
+    "password": "$2b$10$t2Xe6RMpMZVPtj82ijXQmuiO/bwXrTMeOne2o0wAVxKqA.9d20OX6",
+    "coins": 500,
+    "collections": [50,51,52,53,54,55,56,57,58,59,60]
+}]
