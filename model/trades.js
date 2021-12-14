@@ -1,6 +1,7 @@
 "use strict"
 const tradesDbPath = __dirname + "/../data/trades.json";
 const usersDbPath = __dirname + "/../data/users.json";
+const e = require("express");
 const {
   parse,
   serialize
@@ -130,37 +131,125 @@ class Trades {
       return null;
     }
   }
-  acceptTrade(id, idAcceptor) {
+  cancelTrade(id) {
+    const trades = parse(this.tradesDbPath);
+    if (tradeIndex < 0) return;
+    const users = parse(this.usersDbPath);
+    let tradeIndex = trades.findIndex((trade) => trade.id == id);
+    if (trades[tradeIndex].status != "Cancel") {
+      trades[tradeIndex].status = "Cancel";
+      let foundIndexUser = -1;
+      trades[tradeIndex].other_offers.offers.forEach(offer => {
+        foundIndexUser = users.findIndex((user) => user.id == offer.id_acceptor);
+        if (foundIndexUser < 0) return;
+        console.log(foundIndexUser)
+        offer.propositions.forEach(element => {
+          users[foundIndexUser].collections[users[foundIndexUser].collections.length] = element;
+        });
+      });
+      let foundIndexTrader = users.findIndex((user) => user.id == trades[tradeIndex].id_trader);
+      if (foundIndexTrader < 0) return;
+      trades[tradeIndex].propositions.forEach(element => {
+        users[foundIndexTrader].collections[users[foundIndexTrader].collections.length] = element;
+      });
+      serialize(this.usersDbPath, users);
+      serialize(this.tradesDbPath, trades);
+      return true;
+    }
+    return false;
+  }
+  cancelTradeOffer(id, idAcceptor) {
     const trades = parse(this.tradesDbPath);
     let tradeIndex = trades.findIndex((trade) => trade.id == id);
     if (tradeIndex < 0) return;
     const users = parse(this.usersDbPath);
-    trades[tradeIndex].id_acceptor = idAcceptor;
-    trades[tradeIndex].status = "Accepter";
-    let foundIndexUser = -1;
-    trades[tradeIndex].other_offers.offers.forEach(element => {
-      foundIndexUser = users.findIndex((user) => user.id == element.id_acceptor);
-      if (foundIndexUser < 0) return;
-      element.propositions.forEach(element => {
-        console.log(element)
-        users[foundIndexUser].collections[users[foundIndexUser].collections.length] = element;
-      });
+    let foundIndexUser = users.findIndex((user) => user.id == idAcceptor);
+    if (foundIndexUser < 0) return;
 
-    });
-    let foundIndexAcceptor = users.findIndex((user) => user.id == idAcceptor);
-    if (foundIndexAcceptor < 0) return;
-    trades[tradeIndex].propositions.forEach(element => {
-      users[foundIndexAcceptor].collections[users[foundIndexAcceptor].collections.length] = element;
-    });
-    let foundIndexTrader = users.findIndex((user) => user.id == trades[tradeIndex].id_trader);
-    if (foundIndexTrader < 0) return;
-    trades[tradeIndex].requests.forEach(element => {
-      users[foundIndexTrader].collections[users[foundIndexTrader].collections.length] = element;
-    });
-    trades[tradeIndex].status = "Accept";
-    serialize(this.usersDbPath, users);
-    serialize(this.tradesDbPath, trades);
-    return true;
+
+    if (tradeIndex < 0) return;
+    if (trades[tradeIndex].status != "Cancel") {
+      trades[tradeIndex].other_offers.offers.forEach(offer => {
+        if (offer.id_acceptor == idAcceptor) {
+          offer.propositions.forEach(element => {
+            users[foundIndexUser].collections[users[foundIndexUser].collections.length] = element;
+          });
+        }
+      });
+      let foundIndex = trades[tradeIndex].other_offers.offers.findIndex((e) => e.id_acceptor == idAcceptor);
+      if (foundIndexUser < 0) return;
+      trades[tradeIndex].other_offers.offers.splice(foundIndex, 1);
+      serialize(this.usersDbPath, users);
+      serialize(this.tradesDbPath, trades);
+      return true;
+    }
+    return false;
+  }
+  acceptTrade(id, idAcceptor) {
+    const trades = parse(this.tradesDbPath);
+    let tradeIndex = trades.findIndex((trade) => trade.id == id);
+    if (tradeIndex < 0) return;
+    if (trades[tradeIndex].status != "Accept") {
+      const users = parse(this.usersDbPath);
+      trades[tradeIndex].id_acceptor = idAcceptor;
+      trades[tradeIndex].status = "Accept";
+      let foundIndexUser = -1;
+      trades[tradeIndex].other_offers.offers.forEach(element => {
+        foundIndexUser = users.findIndex((user) => user.id == element.id_acceptor);
+        if (foundIndexUser < 0) return;
+        element.propositions.forEach(element => {
+          console.log(element)
+          users[foundIndexUser].collections[users[foundIndexUser].collections.length] = element;
+        });
+
+      });
+      let foundIndexAcceptor = users.findIndex((user) => user.id == idAcceptor);
+      if (foundIndexAcceptor < 0) return;
+      trades[tradeIndex].propositions.forEach(element => {
+        users[foundIndexAcceptor].collections[users[foundIndexAcceptor].collections.length] = element;
+      });
+      let foundIndexTrader = users.findIndex((user) => user.id == trades[tradeIndex].id_trader);
+      if (foundIndexTrader < 0) return;
+      trades[tradeIndex].requests.forEach(element => {
+        users[foundIndexTrader].collections[users[foundIndexTrader].collections.length] = element;
+      });
+      trades[tradeIndex].status = "Accept";
+      serialize(this.usersDbPath, users);
+      serialize(this.tradesDbPath, trades);
+      return true;
+    }
+    return false;
+  }
+  acceptTradeOffer(id, idAcceptor) {
+    const trades = parse(this.tradesDbPath);
+    let tradeIndex = trades.findIndex((trade) => trade.id == id);
+    if (tradeIndex < 0) return;
+    const users = parse(this.usersDbPath);
+    let foundTraderIndex = users.findIndex((user) => user.id == trades[tradeIndex].id);
+    if (trades[tradeIndex].status != "Accept") {
+      trades[tradeIndex].status = "Accept";
+      trades[tradeIndex].id_acceptor = idAcceptor;
+      let foundIndexAcceptor = users.findIndex((user) => user.id == idAcceptor);
+      if (foundIndexAcceptor < 0) return;
+      trades[tradeIndex].propositions.forEach(p => {
+        users[foundIndexAcceptor].collections[users[foundIndexAcceptor].collections.length] = p;
+      })
+      trades[tradeIndex].other_offers.offers.forEach(element => {
+        element.propositions.forEach(element => {
+          if (element.id_acceptor == idAcceptor) {
+            users[foundTraderIndex].collections[users[foundIndexAcceptor].collections.length] = element;
+          } else {
+            let foundIndexAcceptorToRestore = users.findIndex((user) => user.id == element.idAcceptor);
+            if (foundIndexAcceptorToRestore < 0) return;
+            users[foundIndexAcceptorToRestore].collections[users[foundIndexAcceptor].collections.length] = element;
+          }
+        });
+      });
+      serialize(this.usersDbPath, users);
+      serialize(this.tradesDbPath, trades);
+      return true;
+    }
+    return false;
   }
   /*########################### Add End ###########################*/
   /*########################### Utils ###########################*/

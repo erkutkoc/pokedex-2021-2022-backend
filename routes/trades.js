@@ -7,7 +7,9 @@ let router = express.Router();
 const {
     Trades
 } = require("../model/trades");
-const { response } = require("express");
+const {
+    response
+} = require("express");
 const tradeModel = new Trades();
 
 
@@ -82,29 +84,66 @@ router.post("/", function (req, res) {
     return res.json(trade);
 });
 /**
- * 
+ * body = 
+ * {
+    "id" : 1,
+    "id_acceptor" : 2, 
+    "propositions" : [6, 400]
+}
  */
 router.put("/offers", function (req, res) {
     if (!req.body) return res.status(400).end();
     if (!req.body.id || !req.body.id_acceptor || !req.body.propositions) return res.status(400).end();
     console.log(req.body)
     const otherOffers = tradeModel.addOffer(req.body.id, req.body.id_acceptor, req.body.propositions);
-    if(!otherOffers) response.status(400).end();
+    if (!otherOffers) response.status(400).end();
     return res.json(otherOffers);
 });
-router.put("/", function (req, res) {
-    if (!req.body) return res.status(400).end();
-    if (!req.body.idTrader || !req.body.requests || !req.body.propositions) return res.status(400).end();
-
-    const trade = tradeModel.addOffer(req.body.idTrader, req.body.requests, req.body.propositions);
+/**
+ * param  = req.params.id
+ * http://localhost:3000/trades/cancel/1
+ */
+router.put("/cancel/:id", function (req, res) {
+    const trade = tradeModel.cancelTrade(req.params.id);
     if (!trade) return res.status(400).end();
     return res.json(trade);
 });
-router.put("/accept", function(req, res){
+/**
+ * body = 
+ * {
+    "id":1,"id_acceptor": 2
+}
+ */
+router.put("/offers/cancel", function (req, res) {
     if (!req.body) return res.status(400).end();
-    if (!req.body.id || !req.body.id_acceptor) return res.status(400).end(); 
+    if (!req.body.id || !req.body.id_acceptor) return res.status(400).end();
+    console.log("ok")
+    const trade = tradeModel.cancelTradeOffer(req.body.id, req.body.id_acceptor);
+    if (!trade) return res.status(400).end();
+    return res.json(trade);
+});
+/**
+ * e.g 
+ * body = {"id": 1,
+            "id_acceptor": 2}
+ */
+router.put("/accept", function (req, res) {
+    if (!req.body) return res.status(400).end();
+    if (!req.body.id || !req.body.id_acceptor) return res.status(400).end();
     const trade = tradeModel.acceptTrade(req.body.id, req.body.id_acceptor);
-    if(!trade) return res.status(400).end();
+    if (!trade) return res.status(400).end();
+    return res.json(trade);
+});
+/**
+ * e.g 
+ * body = {"id": 1,
+            "id_acceptor": 2}
+ */
+router.put("/accept/offer", function (req, res) {
+    if (!req.body) return res.status(400).end();
+    if (!req.body.id || !req.body.id_acceptor) return res.status(400).end();
+    const trade = tradeModel.acceptTradeOffer(req.body.id, req.body.id_acceptor);
+    if (!trade) return res.status(400).end();
     return res.json(trade);
 });
 
