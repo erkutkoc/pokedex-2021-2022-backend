@@ -5,6 +5,7 @@ var authsRouter = require("./routes/auths");
 var pokemonRouter = require("./routes/pokemons")
 var coinsRouter = require("./routes/coins")
 var usersRouter = require("./routes/users");
+var tradesRouter = require("./routes/trades");
 
 var app = express();
 
@@ -16,5 +17,6 @@ app.use("/auths", authsRouter);
 app.use("/pokemons", pokemonRouter);
 app.use("/coins", coinsRouter);
 app.use("/users", usersRouter);
+app.use("/trades", tradesRouter);
 
 module.exports = app;
