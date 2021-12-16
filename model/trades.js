@@ -42,9 +42,15 @@ class Trades {
   */
   getTraderById(id) {
     const trades = parse(tradesDbPath);
-    const foundIndex = trades.findIndex((trade) => trade.id_trader == id);
-    if (foundIndex < 0) return;
-    return trades[foundIndex];
+    let tradesList = [];
+
+    for(let i=0; i < trades.length; i++){
+        if(trades[i].id_trader == id){
+          tradesList.push(trades[i]);
+        }
+    }
+    if (tradesList.length <= 0) return;
+    return tradesList;
   }
   /*
   Return an exchange proposition proposed by the trader by trade id
