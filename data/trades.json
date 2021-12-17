@@ -47,4 +47,21 @@
 
     },
     "status": "W"
-}]
+}, {  "id":1,
+    "id_trader": 1,
+    "id_acceptor": -1,
+    "requests": [5, 1, 240, 104, 399, 129],
+    "propositions": [3, 5, 48],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+
+    },
+    "status": "W"
+}
+]
