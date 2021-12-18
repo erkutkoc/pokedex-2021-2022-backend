@@ -85,7 +85,8 @@ router.get("/:id/status", function (req, res) {
     "propositions" : [1,2] // this != users.collections
 }
  */
-router.post("/", function (req, res) {
+router.post("/", authorize, function (req, res) {
+  console.log("j'arrive ici ? ")
   if (!req.body) return res.status(400).end();
   if (!req.body.idTrader || !req.body.requests || !req.body.propositions)
     return res.status(400).end();
