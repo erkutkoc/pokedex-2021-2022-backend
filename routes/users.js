@@ -15,6 +15,11 @@ router.get("/collection/:userId", function (req, res) {
   const collection = UserModel.getAllPokemonByUserCollection(req.params.userId);
   return res.json(collection);
 });
+router.get("/collection/:userId/dontown", function (req, res) {
+  console.log(req.params.userId);
+  const collection = UserModel.getAllPokemonDontOwn(req.params.userId);
+  return res.json(collection);
+});
 /**
  * name : POST /pokemons/name/{name}
  */
