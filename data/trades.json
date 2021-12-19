@@ -1,1 +1,279 @@
-[{"id":1,"id_trader":1,"id_acceptor":-1,"requests":[6,2,3,1,500,129],"propositions":[4,5,7],"other_offers":{"offers":[{"id_acceptor":2,"propositions":[20,30,40]},{"id_acceptor":3,"propositions":[20,30,40]}]},"status":"Cancel"},{"id":2,"id_trader":2,"id_acceptor":1,"requests":[6,2,3,1,500,129],"propositions":[4,5,7],"other_offers":{"offers":[{"id_acceptor":2,"propositions":[20,30,40]},{"id_acceptor":3,"propositions":[20,30,40]}]},"status":"Accept"},{"id":3,"id_trader":3,"id_acceptor":1,"requests":[6,2,3,1,500,129],"propositions":[4,5,7],"other_offers":{"offers":[{"id_acceptor":2,"propositions":[20,30,40]},{"id_acceptor":3,"propositions":[20,30,40]}]},"status":"Accept"},{"id":1,"id_trader":1,"id_acceptor":-1,"requests":[5,1,240,104,399,129],"propositions":[3,5,48],"other_offers":{"offers":[{"id_acceptor":2,"propositions":[20,30,40]},{"id_acceptor":3,"propositions":[20,30,40]}]},"status":"Available"}]
+[{
+    "id": 1,
+    "id_trader": 1,
+    "id_acceptor": -1,
+    "requests": [10, 22, 45, 129],
+    "propositions": [4, 5, 75, 7],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Available"
+}, {
+    "id": 2,
+    "id_trader": 2,
+    "id_acceptor": -1,
+    "requests": [100, 101, 102, 103, 104, 250],
+    "propositions": [700, 705, 703],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Cancel"
+}, {
+    "id": 3,
+    "id_trader": 3,
+    "id_acceptor": -1,
+    "requests": [40, 41, 42],
+    "propositions": [70, 90, 91, 95],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Available"
+}, {
+    "id": 4,
+    "id_trader": 1,
+    "id_acceptor": -1,
+    "requests": [124, 125, 126, 127],
+    "propositions": [87, 88],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Available"
+},
+{
+    "id": 5,
+    "id_trader": 2,
+    "id_acceptor": -1,
+    "requests": [1,2],
+    "propositions": [56, 58],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Available"
+},
+{
+    "id": 6,
+    "id_trader": 3,
+    "id_acceptor": -1,
+    "requests": [301],
+    "propositions": [302,304],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Available"
+},{
+    "id": 7,
+    "id_trader": 3,
+    "id_acceptor": -1,
+    "requests": [585,777],
+    "propositions": [86,77,66],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Available"
+},
+{
+    "id": 8,
+    "id_trader": 2,
+    "id_acceptor": -1,
+    "requests": [665,604],
+    "propositions": [32,31,29],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Available"
+},
+{
+    "id": 9,
+    "id_trader": 3,
+    "id_acceptor": -1,
+    "requests": [50,59,69],
+    "propositions": [41,81],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Available"
+},
+{
+    "id": 10,
+    "id_trader": 1,
+    "id_acceptor": -1,
+    "requests": [22,21],
+    "propositions": [18,19],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Available"
+},
+{
+    "id": 11,
+    "id_trader": 1,
+    "id_acceptor": -1,
+    "requests": [12,15,17],
+    "propositions": [19,20,21,24],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Available"
+},{
+    "id": 12,
+    "id_trader": 1,
+    "id_acceptor": -1,
+    "requests": [33,35,39],
+    "propositions": [47,48,49],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Available"
+},{
+    "id": 13,
+    "id_trader": 1,
+    "id_acceptor": -1,
+    "requests": [39,98,89],
+    "propositions": [35,39],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Available"
+},{
+    "id": 14,
+    "id_trader": 1,
+    "id_acceptor": -1,
+    "requests": [124, 112],
+    "propositions": [111,222],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Available"
+},{
+    "id": 15,
+    "id_trader": 1,
+    "id_acceptor": -1,
+    "requests": [420,147],
+    "propositions": [99,88,77],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Available"
+},{
+    "id": 16,
+    "id_trader": 1,
+    "id_acceptor": -1,
+    "requests": [25,17,16],
+    "propositions": [88],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Available"
+},{
+    "id": 17,
+    "id_trader": 1,
+    "id_acceptor": -1,
+    "requests": [35,36,37],
+    "propositions": [87, 88],
+    "other_offers": {
+        "offers": [{
+            "id_acceptor": 2,
+            "propositions": [20, 30, 40]
+        }, {
+            "id_acceptor": 3,
+            "propositions": [20, 30, 40]
+        }]
+    },
+    "status": "Cancel"
+}]

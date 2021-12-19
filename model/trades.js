@@ -61,7 +61,8 @@ class Trades {
   getTraderProposition(id) {
     const trades = parse(tradesDbPath);
     const pokemons = parse(pokemonsDbPath);
-    const foundIndex = trades.findIndex((trade) => trade.id_trader == id);
+    const foundIndex = trades.findIndex((trade) => trade.id == id);
+    console.log(foundIndex)
     if (foundIndex < 0) return;
     let pokemonsPropositionsArray = [];
     trades[foundIndex].propositions.forEach((idPokemon) => {
@@ -79,7 +80,8 @@ class Trades {
   getTraderRequest(id) {
     const trades = parse(tradesDbPath);
     const pokemons = parse(pokemonsDbPath);
-    const foundIndex = trades.findIndex((trade) => trade.id_trader == id);
+    const foundIndex = trades.findIndex((trade) => trade.id == id);
+    console.log(foundIndex)
     if (foundIndex < 0) return;
     let pokemonsRequestsArray = [];
     trades[foundIndex].requests.forEach((idPokemon) => {
@@ -142,7 +144,7 @@ class Trades {
         other_offers: {
           offers: Array(null),
         },
-        status: "En cours",
+        status: "Available",
       };
       trades.push(newTrade);
       serialize(this.tradesDbPath, trades);

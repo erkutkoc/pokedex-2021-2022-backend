@@ -53,7 +53,6 @@ router.get("/:id/requests", function (req, res) {
   const id = req.params.id;
   console.log("GET /trades/id/" + id);
   const trade = tradeModel.getTraderRequest(id);
-  console.log(trade);
   if (!trade) return res.status(404).end();
   return res.json(trade);
 });

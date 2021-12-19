@@ -68,17 +68,17 @@ class Users {
 
     return users[foundIndexUser];
   }
-  getAllPokemonDontOwn(id){
+  getAllPokemonDontOwn(id) {
     const users = parse(this.jsonDbPath);
     const foundIndexUser = users.findIndex((user) => user.id == id);
     if (foundIndexUser < 0) return;
     const pokemons = parse(jsonPokemonDbPath);
     let collections = pokemons;
     users[foundIndexUser].collections.forEach(pokemonId => {
-      let pokemonIndex = collections.findIndex(pokemon => pokemon.id == pokemonId );
+      let pokemonIndex = collections.findIndex(pokemon => pokemon.id == pokemonId);
       collections.splice(pokemonIndex, 1);
     });
-      return collections;
+    return collections;
   }
 
   /**
