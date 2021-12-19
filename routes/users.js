@@ -41,7 +41,7 @@ router.post("/collection", authorize, function (req, res) {
 /**
  * GET /{userId}"
  */
-router.get("/:userId", authorize, function (req, res) {
+router.get("/:userId", function (req, res) {
   const user = UserModel.getOne(req.params.userId);
   return res.json(user);
 });
@@ -51,13 +51,18 @@ router.put("/:userId", authorize, async function (req, res) {
   // Send an error code '400 Bad request' if the body parameters are not valid
   if (
     !req.body ||
-    (req.body.hasOwnProperty("currentPassword") && req.body.currentPassword.length === 0) ||
-    (req.body.hasOwnProperty("newPassword") && req.body.newPassword.length === 0) 
+    (req.body.hasOwnProperty("currentPassword") &&
+      req.body.currentPassword.length === 0) ||
+    (req.body.hasOwnProperty("newPassword") &&
+      req.body.newPassword.length === 0)
     //(req.body.hasOwnProperty("newPasswordCheck") && req.body.newPasswordCheck.length === 0)
   )
     return res.status(400).end();
 
-  const userUpdated = await UserModel.updateOneUser(req.params.userId, req.body);
+  const userUpdated = await UserModel.updateOneUser(
+    req.params.userId,
+    req.body
+  );
   if (!userUpdated) return res.status(404).end();
   return res.json(userUpdated);
 });

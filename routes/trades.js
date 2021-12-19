@@ -53,6 +53,7 @@ router.get("/:id/requests", function (req, res) {
   const id = req.params.id;
   console.log("GET /trades/id/" + id);
   const trade = tradeModel.getTraderRequest(id);
+  console.log(trade);
   if (!trade) return res.status(404).end();
   return res.json(trade);
 });
@@ -124,6 +125,7 @@ router.put("/offers", function (req, res) {
  */
 router.put("/cancel/:id", function (req, res) {
   const trade = tradeModel.cancelTrade(req.params.id);
+  console.log(trade);
   if (!trade) return res.status(400).end();
   return res.json(trade);
 });
@@ -147,6 +149,7 @@ router.put("/offers/cancel", function (req, res) {
             "id_acceptor": 2}
  */
 router.put("/accept", function (req, res) {
+  console.log(req.body);
   if (!req.body) return res.status(400).end();
   if (!req.body.id || !req.body.id_acceptor) return res.status(400).end();
   const trade = tradeModel.acceptTrade(req.body.id, req.body.id_acceptor);
