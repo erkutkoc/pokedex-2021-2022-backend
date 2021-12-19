@@ -114,7 +114,7 @@ router.put("/offers", function (req, res) {
  * param  = req.params.id
  * http://localhost:3000/trades/cancel/1
  */
-router.put("/cancel/:id", function (req, res) {
+router.put("/cancel/:id", authorize, function (req, res) {
   const trade = tradeModel.cancelTrade(req.params.id);
   if (!trade) return res.status(400).end();
   return res.json(trade);

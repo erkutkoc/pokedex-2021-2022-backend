@@ -180,7 +180,7 @@ class Trades {
     const users = parse(this.usersDbPath);
     let tradeIndex = trades.findIndex((trade) => trade.id == id);
     if (tradeIndex < 0) return;
-
+    console.log(tradeIndex)
     if (trades[tradeIndex].status != "Cancel") {
       trades[tradeIndex].status = "Cancel";
       let foundIndexUser = -1;
