@@ -11,12 +11,10 @@ const { authorizeFromCookie, authorize } = require("../utils/authorize");
  * all : GET /all users
  */
 router.get("/collection/:userId", function (req, res) {
-  console.log(req.params.userId);
   const collection = UserModel.getAllPokemonByUserCollection(req.params.userId);
   return res.json(collection);
 });
 router.get("/collection/:userId/dontown", function (req, res) {
-  console.log(req.params.userId);
   const collection = UserModel.getAllPokemonDontOwn(req.params.userId);
   return res.json(collection);
 });
@@ -24,13 +22,7 @@ router.get("/collection/:userId/dontown", function (req, res) {
  * name : POST /pokemons/name/{name}
  */
 router.post("/collection", authorize, function (req, res) {
-  console.log(
-    "POST collection {user, pokemon} {" +
-      req.body.user +
-      "," +
-      req.body.pokemon +
-      "}"
-  );
+
   const collection = UserModel.addPokemonInUserCollection(
     req.body.user,
     req.body.pokemon
