@@ -250,7 +250,6 @@ class Users {
     var collection = users[foundIndexUser].collections;
     collection[collection.length] = parseInt(pokemonId);
     users[foundIndexUser].collections = collection;
-    console.log(users[foundIndexUser])
     serialize(jsonDbPath, users);
     return users[foundIndexUser];
   }

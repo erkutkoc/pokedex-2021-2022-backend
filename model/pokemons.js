@@ -64,7 +64,7 @@ class Pokemon {
     }
     getByName(name){
         const pokemons = parse(jsonDbPath);
-        const foundIndex = pokemons.findIndex((pokemon) => pokemon.name.french.toLowerCase() == name.toLowerCase() ||  pokemon.name.english.toLowerCase() == name.toLowerCase());
+        const foundIndex = pokemons.findIndex((pokemon) => pokemon.name.english.toLowerCase() == name.toLowerCase() ||  pokemon.name.english.toLowerCase() == name.toLowerCase());
         if (foundIndex < 0) return;
         return pokemons[foundIndex];
     }

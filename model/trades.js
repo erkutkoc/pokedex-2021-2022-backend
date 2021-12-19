@@ -20,20 +20,15 @@ class Trades {
   */
   getAll() {
     const trades = parse(tradesDbPath);
-    console.log(trades);
     return trades;
   }
   getFilteredCollections(idTrader, idAcceptor) {
-    console.log(idTrader);
-    console.log(idAcceptor);
     const users = parse(usersDbPath);
     let traderIndex = users.findIndex((user) => user.id == idTrader);
     let acceptorIndex = users.findIndex((user) => user.id == idAcceptor);
     let traderCollections = users[traderIndex].collections;
     let acceptorCollections = users[acceptorIndex].collections;
     let collections = [];
-    console.log(traderCollections);
-    console.log(acceptorCollections);
     traderCollections.forEach((element) => {
       acceptorCollections = acceptorCollections.filter((e) => element != e);
     });
@@ -62,7 +57,6 @@ class Trades {
     const trades = parse(tradesDbPath);
     const pokemons = parse(pokemonsDbPath);
     const foundIndex = trades.findIndex((trade) => trade.id == id);
-    console.log(foundIndex)
     if (foundIndex < 0) return;
     let pokemonsPropositionsArray = [];
     trades[foundIndex].propositions.forEach((idPokemon) => {
@@ -81,7 +75,6 @@ class Trades {
     const trades = parse(tradesDbPath);
     const pokemons = parse(pokemonsDbPath);
     const foundIndex = trades.findIndex((trade) => trade.id == id);
-    console.log(foundIndex)
     if (foundIndex < 0) return;
     let pokemonsRequestsArray = [];
     trades[foundIndex].requests.forEach((idPokemon) => {
@@ -111,7 +104,6 @@ class Trades {
   */
   getTradeStatus(id) {
     const trades = parse(tradesDbPath);
-    console.log(trades);
     const foundIndex = trades.findIndex((trade) => trade.id == id);
     if (foundIndex < 0) return;
     return trades[foundIndex].status;
@@ -197,14 +189,12 @@ class Trades {
           (user) => user.id == offer.id_acceptor
         );
         if (foundIndexUser < 0) return;
-        console.log(foundIndexUser);
         offer.propositions.forEach((element) => {
           users[foundIndexUser].collections[
             users[foundIndexUser].collections.length
           ] = element;
         });
       });
-      console.log("ok2");
       let foundIndexTrader = users.findIndex(
         (user) => user.id == trades[tradeIndex].id_trader
       );
@@ -265,7 +255,6 @@ class Trades {
         );
         if (foundIndexUser < 0) return;
         element.propositions.forEach((element) => {
-          console.log(element);
           users[foundIndexUser].collections[
             users[foundIndexUser].collections.length
           ] = element;

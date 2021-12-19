@@ -14,7 +14,6 @@ router.put("/:id", authorize, function (req, res) {
     return res.status(400).end();
 
   const userUpdated = userModel.updateUserCoins(req.params.id, req.body.coins);
-  console.log("userUpdated : " + userUpdated);
   if (!userUpdated) return res.status(404).end();
   return res.json(userUpdated);
 });
