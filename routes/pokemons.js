@@ -38,7 +38,7 @@ router.get("/id/:id", function (req, res) {
 router.put("/random/:number/:id", authorize, function (req, res) {
   var userId = req.params.id;
   var number = req.params.number;
-  let pokemon = new Array(number);
+  let pokemon = [];
   for (let index = 0; index < number; index++) {
     pokemon[index] = PokemonModel.getOneRandom();
     UserModel.addPokemonInUserCollection(userId, pokemon[index].id);

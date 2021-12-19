@@ -15,31 +15,14 @@ const jsonCoinsHistoryForUserDbPath = __dirname + "/../data/coinsHistoryForUser.
 
 const saltRounds = 10;
 
-// Default data -- mdp = 'admin'
-const defaultItems = [{
-  id: 1,
-  email: "admin@test.be",
-  pseudo: "admin",
-  password: "$2b$10$RqcgWQT/Irt9MQC8UfHmjuGCrQkQNeNcU6UtZURdSB/fyt6bMWARa",
-  coins: 0,
-  "collections": [4, 2, 3]
-}, ];
-// hash default password
-/*
-bcrypt.hash(defaultItems[0].password, saltRounds).then((hashedPassword) => {
-  defaultItems[0].password = hashedPassword;
-  console.log("Hash of default password:", hashedPassword);
-});
-*/
 
 class Users {
-  constructor(dbPath = jsonDbPath, users = defaultItems) {
+  constructor(dbPath = jsonDbPath) {
     this.jsonDbPath = dbPath;
-    this.defaultItems = users;
   }
 
   getNextId() {
-    const users = parse(this.jsonDbPath, this.defaultItems);
+    const users = parse(this.jsonDbPath);
     let nextId;
     if (users.length === 0) nextId = 1;
     else nextId = users[users.length - 1].id + 1;
@@ -52,7 +35,7 @@ class Users {
    * @returns {Array} Array of users
    */
   getAll() {
-    const users = parse(this.jsonDbPath, this.defaultItems);
+    const users = parse(this.jsonDbPath);
     return users;
   }
 
@@ -62,7 +45,7 @@ class Users {
    * @returns {object} the user found or undefined if the id does not lead to a user
    */
   getOne(id) {
-    const users = parse(this.jsonDbPath, this.defaultItems);
+    const users = parse(this.jsonDbPath);
     const foundIndexUser = users.findIndex((user) => user.id == id);
     if (foundIndexUser < 0) return;
 
@@ -87,7 +70,7 @@ class Users {
    * @returns {object} the user found or undefined if the email does not lead to a user
    */
   getOneByEmail(email) {
-    const users = parse(this.jsonDbPath, this.defaultItems);
+    const users = parse(this.jsonDbPath);
     const foundIndexUser = users.findIndex((user) => user.email == email);
     if (foundIndexUser < 0) return;
 
@@ -119,7 +102,7 @@ class Users {
    */
 
   async addOne(body) {
-    const users = parse(this.jsonDbPath, this.defaultItems);
+    const users = parse(this.jsonDbPath);
 
     // hash the password (async call)
     const hashedPassword = await bcrypt.hash(body.password, saltRounds);
@@ -131,6 +114,7 @@ class Users {
       pseudo: body.pseudo,
       password: hashedPassword,
       coins: 0,
+      collections: [],
     };
     users.push(newitem);
     serialize(this.jsonDbPath, users);
@@ -144,7 +128,7 @@ class Users {
    * @returns {object} the user that was deleted or undefined if the delete operation failed
    */
   deleteOne(id) {
-    const users = parse(this.jsonDbPath, this.defaultItems);
+    const users = parse(this.jsonDbPath);
     const foundIndexUser = users.findIndex((user) => user.id == id);
     if (foundIndexUser < 0) return;
     const itemRemoved = users.splice(foundIndexUser, 1);
@@ -160,7 +144,7 @@ class Users {
    * @returns {object} the updated user or undefined if the update operation failed
    */
   updateOne(id, body) {
-    const users = parse(this.jsonDbPath, this.defaultItems);
+    const users = parse(this.jsonDbPath);
     const foundIndexUser = users.findIndex((user) => user.id == id);
     if (foundIndexUser < 0) return;
     // create a new object based on the existing user - prior to modification -
@@ -184,7 +168,7 @@ class Users {
    * @returns {object} the updated user or undefined if the update operation failed
    */
   async updateOneUser(id, body) {
-    const users = parse(this.jsonDbPath, this.defaultItems);
+    const users = parse(this.jsonDbPath);
     const foundIndexUser = users.findIndex((user) => user.id == id);
     if (foundIndexUser < 0) return;
 
@@ -211,14 +195,17 @@ class Users {
    * @returns {object} the updated user or undefined if the update operation failed
    */
   updateUserCoins(id, coins) {
-    const users = parse(this.jsonDbPath, this.defaultItems);
+    const users = parse(this.jsonDbPath);
     const foundIndexUser = users.findIndex((user) => user.id == id);
     if (foundIndexUser < 0) return;
     //fait ça pour éviter toutes tentatives d'injections, + doit le remettre en int car escape le transforme en String
     var coinsToAdd = escape(coins);
     var intCoinsToAdd = parseInt(coinsToAdd);
-
-    users[foundIndexUser].coins = users[foundIndexUser].coins + intCoinsToAdd;;
+    console.log("check coins" + users[foundIndexUser].coins + intCoinsToAdd);
+    if(users[foundIndexUser].coins + intCoinsToAdd < 0){
+      return;
+    }
+    users[foundIndexUser].coins = users[foundIndexUser].coins + intCoinsToAdd;
 
     var today = new Date();
     var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -307,7 +294,7 @@ class Users {
     const newUser = await this.addOne({
       email: escape(email),
       pseudo: escape(pseudo),
-      password: escape(password)
+      password: escape(password),
     });
 
     const authenticatedUser = {
