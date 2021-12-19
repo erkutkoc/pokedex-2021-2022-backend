@@ -6,7 +6,7 @@ const { Users } = require("../model/users");
 
 const PokemonModel = new Pokemon();
 const UserModel = new Users();
-const { authorizeFromCookie, authorize } = require("../utils/authorize");
+const { authorize } = require("../utils/authorize");
 /**
  * all : GET /all users
  */

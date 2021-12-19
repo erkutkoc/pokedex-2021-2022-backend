@@ -98,7 +98,7 @@ router.post("/", authorize, function (req, res) {
     "propositions" : [6, 400]
 }
  */
-router.put("/offers", function (req, res) {
+router.put("/offers", authorize, function (req, res) {
   if (!req.body) return res.status(400).end();
   if (!req.body.id || !req.body.id_acceptor || !req.body.propositions)
     return res.status(400).end();
@@ -125,7 +125,7 @@ router.put("/cancel/:id", authorize, function (req, res) {
     "id":1,"id_acceptor": 2
 }
  */
-router.put("/offers/cancel", function (req, res) {
+router.put("/offers/cancel", authorize, function (req, res) {
   if (!req.body) return res.status(400).end();
   if (!req.body.id || !req.body.id_acceptor) return res.status(400).end();
   const trade = tradeModel.cancelTradeOffer(req.body.id, req.body.id_acceptor);
@@ -137,7 +137,7 @@ router.put("/offers/cancel", function (req, res) {
  * body = {"id": 1,
             "id_acceptor": 2}
  */
-router.put("/accept", function (req, res) {
+router.put("/accept", authorize, function (req, res) {
   if (!req.body) return res.status(400).end();
   if (!req.body.id || !req.body.id_acceptor) return res.status(400).end();
   const trade = tradeModel.acceptTrade(req.body.id, req.body.id_acceptor);
@@ -149,7 +149,7 @@ router.put("/accept", function (req, res) {
  * body = {"id": 1,
             "id_acceptor": 2}
  */
-router.put("/accept/offer", function (req, res) {
+router.put("/accept/offer", authorize, function (req, res) {
   if (!req.body) return res.status(400).end();
   if (!req.body.id || !req.body.id_acceptor) return res.status(400).end();
   const trade = tradeModel.acceptTradeOffer(req.body.id, req.body.id_acceptor);
